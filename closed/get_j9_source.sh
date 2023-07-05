@@ -56,11 +56,11 @@ declare -A git_urls
 declare -A shas
 declare -A references
 
-git_urls[openj9]=https://github.com/eclipse-openj9/openj9
-branches[openj9]=v0.38.0-release
+git_urls[openj9]=git@github.com:ibmruntimes/semeru-openj9.git
+branches[openj9]=ifix-17.0.7.7_APAR-IJ47413_20230704_01
 
-git_urls[omr]=https://github.com/eclipse-openj9/openj9-omr
-branches[omr]=v0.38.0-release
+git_urls[omr]=git@github.com:ibmruntimes/semeru-openj9-omr.git
+branches[omr]=ifix-17.0.7.7_APAR-IJ47413_20230704_01
 
 pflag=false
 
