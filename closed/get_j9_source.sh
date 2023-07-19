@@ -56,10 +56,10 @@ declare -A git_urls
 declare -A shas
 declare -A references
 
-git_urls[openj9]=git@github.com:ibmruntimes/semeru-openj9.git
+git_urls[openj9]=https://github.com/ibmruntimes/semeru-openj9
 branches[openj9]=ifix-17.0.7.7_APAR-IJ47413_20230704_01
 
-git_urls[omr]=git@github.com:ibmruntimes/semeru-openj9-omr.git
+git_urls[omr]=https://github.com/ibmruntimes/semeru-openj9-omr
 branches[omr]=ifix-17.0.7.7_APAR-IJ47413_20230704_01
 
 pflag=false
