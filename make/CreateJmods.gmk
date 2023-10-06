@@ -238,7 +238,7 @@ $(eval $(call SetupExecute, create_$(JMOD_FILE), \
     PRE_COMMAND := $(RM) $(JMODS_DIR)/$(JMOD_FILE) $(JMODS_SUPPORT_DIR)/$(JMOD_FILE), \
     COMMAND := $(JMOD) create --module-version $(VERSION_SHORT) \
         --target-platform '$(OPENJDK_MODULE_TARGET_PLATFORM)' \
-        --module-path $(JMODS_DIR) $(JMOD_FLAGS) \
+        --module-path $(JMODS_DIR) $(JMOD_FLAGS) -J-Djdk.nativeCrypto=false \
         $(JMOD_SOURCE_DATE) \
         $(JMODS_SUPPORT_DIR)/$(JMOD_FILE), \
     POST_COMMAND := $(MV) $(JMODS_SUPPORT_DIR)/$(JMOD_FILE) $(JMODS_DIR)/$(JMOD_FILE), \
