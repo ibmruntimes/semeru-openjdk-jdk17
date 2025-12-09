@@ -36,7 +36,9 @@ public class OpenJ9PropsExt implements Callable<Map<String, String>> {
 
         Map<String, String> map = new HashMap<>();
         try {
+            map.put("container.support", "true");
             map.put("docker.support", "true");
+            map.put("vm.asan", "false");
             map.put("vm.bits", vmBits());
             map.put("vm.compiler2.enabled", "false");
             map.put("vm.debug", "false");
