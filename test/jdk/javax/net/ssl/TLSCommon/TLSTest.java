@@ -25,7 +25,7 @@
 
 /*
  * ===========================================================================
- * (c) Copyright IBM Corp. 2024, 2024 All Rights Reserved
+ * (c) Copyright IBM Corp. 2024, 2026 All Rights Reserved
  * ===========================================================================
  */
 import java.io.ByteArrayInputStream;
@@ -488,9 +488,11 @@ public class TLSTest {
             //
             // Private key.
             //
-            "MGICAQAwFAYHKoZIzj0CAQYJKyQDAwIIAQENBEcwRQIBAQRAgPx92Cu2UnmeC/NG\n"
+            "-----BEGIN PRIVATE KEY-----\n"
+            + "MGICAQAwFAYHKoZIzj0CAQYJKyQDAwIIAQENBEcwRQIBAQRAgPx92Cu2UnmeC/NG\n"
             + "KdwrYso1y3MHfY8UbcvuC/POxDqvrYsaSqBBWq8uSFlgRAwFXhdMJDzF9jGbaw79\n"
             + "gNzowQ==\n"
+            + "-----END PRIVATE KEY-----"
         ),
         rsa_pss_pss_sha256(
                 "RSASSA-PSS",
