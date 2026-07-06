@@ -23,6 +23,12 @@
  * questions.
  */
 
+/*
+ * ===========================================================================
+ * (c) Copyright IBM Corp. 2026, 2026 All Rights Reserved
+ * ===========================================================================
+ */
+
 package sun.security.ssl;
 
 import java.io.IOException;
@@ -570,7 +576,7 @@ final class ServerHello {
             // For KA flows, the server first receives the client's share,
             // then generates its key share, and finally comes here.
             // However, this is changed for KEM: the server
-            // must perform both actions — derive the secret and generate
+            // must perform both actions - derive the secret and generate
             // the key encapsulation message at the same time during
             // encapsulation in SHKeyShareProducer.
             //
@@ -619,7 +625,7 @@ final class ServerHello {
             SecretKey handshakeSecret = null;
 
             // For KEM, the shared secret has already been generated and
-            // stored in the server’s possession (KEMSenderPossession)
+            // stored in the server's possession (KEMSenderPossession)
             // during encapsulation in SHKeyShareProducer.
             //
             // Only one key share is selected by the server, so at most one
@@ -634,7 +640,7 @@ final class ServerHello {
             if (handshakeSecret == null) {
                 SSLKeyDerivation handshakeKD = ke.createKeyDerivation(shc);
                 handshakeSecret = handshakeKD.deriveKey(
-                        "TlsHandshakeSecret");
+                        "TlsHandshakeSecret", null);
             }
 
             SSLTrafficKeyDerivation kdg =
