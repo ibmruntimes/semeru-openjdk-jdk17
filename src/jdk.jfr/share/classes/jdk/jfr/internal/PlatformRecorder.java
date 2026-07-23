@@ -23,6 +23,12 @@
  * questions.
  */
 
+/*
+ * ===========================================================================
+ * (c) Copyright IBM Corp. 2026, 2026 All Rights Reserved
+ * ===========================================================================
+ */
+
 package jdk.jfr.internal;
 
 import static jdk.jfr.internal.LogLevel.ERROR;
@@ -188,6 +194,9 @@ public final class PlatformRecorder {
 
     synchronized void setInShutDown() {
         this.inShutdown = true;
+        synchronized (JVM.CHUNK_ROTATION_MONITOR) {
+            JVM.CHUNK_ROTATION_MONITOR.notifyAll();
+        }
     }
 
     // called by shutdown hook
@@ -521,6 +530,9 @@ public final class PlatformRecorder {
                 // Catch everything and log, but don't allow it to end the periodic task
                 Logger.log(JFR_SYSTEM, ERROR, "Error in Periodic task: " + t.getClass().getName());
             } finally {
+                if (inShutdown) {
+                    break;
+                }
                 takeNap(wait);
             }
         }
