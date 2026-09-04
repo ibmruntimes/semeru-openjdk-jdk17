@@ -25,7 +25,7 @@
 
 /*
  * ===========================================================================
- * (c) Copyright IBM Corp. 2024, 2024 All Rights Reserved
+ * (c) Copyright IBM Corp. 2024, 2026 All Rights Reserved
  * ===========================================================================
  */
 package sun.security.ssl;
@@ -35,11 +35,13 @@ import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.security.*;
 import java.security.spec.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import javax.crypto.KeyAgreement;
+import sun.security.action.GetPropertyAction;
 import sun.security.ssl.DHKeyExchange.DHEPossession;
 import sun.security.ssl.ECDHKeyExchange.ECDHEPossession;
 import sun.security.util.CurveDB;
@@ -745,95 +747,6 @@ enum NamedGroup {
         public SSLKeyDerivation createKeyDerivation(
                 HandshakeContext hc) throws IOException {
             return KEMKeyExchange.kemKAGenerator.createKeyDerivation(hc);
-        }
-    }
-
-    static final class SupportedGroups {
-        // the supported named groups, non-null immutable list
-        static final String[] namedGroups;
-
-        static {
-            // RestrictedSecurity must be given an opportunity to set
-            // jdk.tls.namedGroups based on the selected profile, if applicable.
-            NamedGroup.SECP256_R1.ordinal();
-
-            // The value of the System Property defines a list of enabled named
-            // groups in preference order, separated with comma.  For example:
-            //
-            //      jdk.tls.namedGroups="secp521r1, secp256r1, ffdhe2048"
-            //
-            // If the System Property is not defined or the value is empty, the
-            // default groups and preferences will be used.
-            String property = GetPropertyAction
-                    .privilegedGetProperty("jdk.tls.namedGroups");
-            if (property != null && !property.isEmpty()) {
-                // remove double quote marks from beginning/end of the property
-                if (property.length() > 1 && property.charAt(0) == '"' &&
-                        property.charAt(property.length() - 1) == '"') {
-                    property = property.substring(1, property.length() - 1);
-                }
-            }
-
-            ArrayList<String> groupList;
-            if (property != null && !property.isEmpty()) {
-                String[] groups = property.split(",");
-                groupList = new ArrayList<>(groups.length);
-                for (String group : groups) {
-                    group = group.trim();
-                    if (!group.isEmpty()) {
-                        NamedGroup namedGroup = nameOf(group);
-                        if (namedGroup != null) {
-                            if (namedGroup.isAvailable) {
-                                groupList.add(namedGroup.name);
-                            }
-                        }   // ignore unknown groups
-                    }
-                }
-
-                if (groupList.isEmpty()) {
-                    throw new IllegalArgumentException(
-                            "System property jdk.tls.namedGroups(" +
-                            property + ") contains no supported named groups");
-                }
-            } else {        // default groups
-                NamedGroup[] groups = new NamedGroup[] {
-
-                        // Hybrid key agreement
-                        X25519MLKEM768,
-
-                        // Primary XDH (RFC 7748) curves
-                        X25519,
-
-                        // Primary NIST Suite B curves
-                        SECP256_R1,
-                        SECP384_R1,
-                        SECP521_R1,
-
-                        // Secondary XDH curves
-                        X448,
-
-                        // FFDHE (RFC 7919)
-                        FFDHE_2048,
-                        FFDHE_3072,
-                        FFDHE_4096,
-                        FFDHE_6144,
-                        FFDHE_8192,
-                    };
-
-                groupList = new ArrayList<>(groups.length);
-                for (NamedGroup group : groups) {
-                    if (group.isAvailable) {
-                        groupList.add(group.name);
-                    }
-                }
-
-                if (groupList.isEmpty() &&
-                        SSLLogger.isOn && SSLLogger.isOn("ssl")) {
-                    SSLLogger.warning("No default named groups");
-                }
-            }
-
-            namedGroups = groupList.toArray(new String[0]);
         }
     }
 }

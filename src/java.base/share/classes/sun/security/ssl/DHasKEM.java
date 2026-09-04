@@ -23,6 +23,12 @@
  * questions.
  */
 
+/*
+ * ===========================================================================
+ * (c) Copyright IBM Corp. 2026, 2026 All Rights Reserved
+ * ===========================================================================
+ */
+
 package sun.security.ssl;
 
 import sun.security.util.ArrayUtil;
@@ -147,11 +153,11 @@ public class DHasKEM implements KEMSpi {
         // This KEM is designed to be able to represent every ECDH and XDH
         private Params paramsFromKey(Key k) throws InvalidKeyException {
             if (k instanceof ECKey eckey) {
-                if (ECUtil.equals(eckey.getParams(), CurveDB.P_256)) {
+                if (ECUtil.equals(eckey.getParams(), CurveDB.lookup("secp256r1"))) {
                     return Params.P256;
-                } else if (ECUtil.equals(eckey.getParams(), CurveDB.P_384)) {
+                } else if (ECUtil.equals(eckey.getParams(), CurveDB.lookup("secp384r1"))) {
                     return Params.P384;
-                } else if (ECUtil.equals(eckey.getParams(), CurveDB.P_521)) {
+                } else if (ECUtil.equals(eckey.getParams(), CurveDB.lookup("secp521r1"))) {
                     return Params.P521;
                 }
             } else if (k instanceof XECKey xkey
@@ -171,13 +177,13 @@ public class DHasKEM implements KEMSpi {
     private enum Params {
 
         P256(32, 2 * 32 + 1,
-                "ECDH", "EC", CurveDB.P_256),
+                "ECDH", "EC", CurveDB.lookup("secp256r1")),
 
         P384(48, 2 * 48 + 1,
-                "ECDH", "EC", CurveDB.P_384),
+                "ECDH", "EC", CurveDB.lookup("secp384r1")),
 
         P521(66, 2 * 66 + 1,
-                "ECDH", "EC", CurveDB.P_521),
+                "ECDH", "EC", CurveDB.lookup("secp521r1")),
 
         X25519(32, 32,
                 "XDH", "XDH", NamedParameterSpec.X25519),
